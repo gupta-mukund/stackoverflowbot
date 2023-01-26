@@ -14,7 +14,9 @@ $chat_id = $telegram->ChatID();
 $name = $telegram->FirstName();
 $messages = array();
 
-switch ($telegram->Text()) {
+$received = $telegram->Text();
+
+switch ($received) {
     case '/start':
         array_push($messages, $name . ", welcome to our bot!");
         sendMessagesToChat($telegram, $chat_id, $messages);
@@ -26,9 +28,10 @@ switch ($telegram->Text()) {
         break;
     default:
         if ($database->getChatStatus($chat_id) == "question") {
-            $all_posts = Stackapi::getPosts($telegram->Text());
-            array_push($messages, "arrivato");
+            $questions_message = createQuestionsMessage(Stackapi::getPosts($received));
+            array_push($messages, $questions_message);
             sendMessagesToChat($telegram, $chat_id, $messages);
+            $database->setStatus($chat_id, "nothing");
             break;
         }
         array_push($messages, "Command not accepted!");
@@ -36,19 +39,3 @@ switch ($telegram->Text()) {
         sendMessagesToChat($telegram, $chat_id, $messages);
         break;
 }
-
-$messages = array();
-
-// $all_posts = Stackapi::getPosts("firebase");
-
-
-// foreach ($all_posts as $post) {
-//     echo $post->{"title"};
-//     echo "<br>";
-//     echo $post->{"question_id"};
-//     echo "<br>";
-//     echo $post->{"answer_count"};
-//     echo "<br>";
-//     echo $post->{"score"};
-//     echo "<br>";
-// }
