@@ -20,9 +20,19 @@ function createQuestionsMessage($data)
         $result = $result . " Q: " . $single->{"title"};
         $result = $result . "\n";
         $result = $result . $blue_diamond . " votes: " . $single->{"score"} . ", answers: " . $single->{"answer_count"} . "\n";
-        //$result = $result . substr($single->{"body"}, 0, 300) . "...\n";
+        $result = $result . htmlentities(substr($single->{"body"}, 0, 300)) . "...\n";
         $result = $result . "/question_" . $single->{"question_id"};
         $result = $result . "\n\n";
+    }
+    return $result;
+}
+
+function createSingleQuestionMessage($data)
+{
+    $result = "";
+    foreach ($data as $single) {
+        $result = $result . "Q " . $single->{"title"} . "\n";
+        //$result = $result . htmlentities($single->{"body"});
     }
     return $result;
 }

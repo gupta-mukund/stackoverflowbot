@@ -5,6 +5,7 @@ class Stackapi
     private static $GET_POSTS_URL = "https://api.stackexchange.com/search/advanced?pagesize=7&page=1&site=stackoverflow.com&filter=withbody&q=";
     private static $GET_ANSWERS_URL = "https://api.stackexchange.com/2.3/questions/{id}/answers?order=desc&sort=activity&site=stackoverflow";
     private static $GET_SINGLE_ANSWERS_POST_URL = "https://api.stackexchange.com/2.3/answers/{id}&site=stackoverflow&filter=withbody";
+    private static $GET_SINGLE_QUESTION = "https://api.stackexchange.com/2.3/questions/{id}?site=stackoverflow&filter=withbody";
 
     private static function get_json($url)
     {
@@ -39,5 +40,11 @@ class Stackapi
     {
         $res = str_replace("{id}", strval($answer_id), Stackapi::$GET_SINGLE_ANSWERS_POST_URL);
         return Stackapi::get_json($res);
+    }
+
+    public static function singleQuestion($question_id)
+    {
+        $res = str_replace("{id}", strval($question_id), Stackapi::$GET_SINGLE_QUESTION);
+        return Stackapi::get_json($res)->{"items"};
     }
 }
