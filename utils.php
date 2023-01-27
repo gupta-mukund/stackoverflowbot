@@ -15,6 +15,9 @@ function createQuestionsMessage($data)
 {
     global $orange_diamond, $blue_diamond;
     $result = "";
+    if (count($data) == 0) {
+        return "No questions";
+    }
     foreach ($data as $single) {
         $result = $result . $orange_diamond;
         $result = $result . " Q: " . $single->{"title"};
@@ -34,5 +37,18 @@ function createSingleQuestionMessage($data)
         $result = $result . "Q " . $single->{"title"} . "\n";
         //$result = $result . htmlentities($single->{"body"});
     }
+    return $result;
+}
+
+function createAllAnswersMessage($data)
+{
+    $result = "";
+    if (count($data) == 0) {
+        return "No answers!";
+    }
+    foreach ($data as $single) {
+        $result = $result . "/answer_" . $single->{"answer_id"} . "\n";
+    }
+
     return $result;
 }

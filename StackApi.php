@@ -34,7 +34,7 @@ class Stackapi
     public static function getAllAnswers($question_id)
     {
         $res = str_replace("{id}", strval($question_id), Stackapi::$GET_ANSWERS_URL);
-        return Stackapi::get_json($res);
+        return Stackapi::get_json($res)->{"items"};
     }
     public static function singleSingleAnswer($answer_id)
     {

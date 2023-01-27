@@ -18,19 +18,9 @@ $received = $telegram->Text();
 
 switch ($received) {
     case '/start':
-        $options = [
-            [
-                $telegram->buildInlineKeyboardButton("Answers", $url = "jjso")
-            ]
-        ];
-
-        $kb = $telegram->buildInlineKeyBoard($options, $onetime = true);
-
-
-        $content = array('chat_id' => $chat_id, 'reply_markup' => $kb, 'text' => "This is a Keyboard Test");
         $telegram->sendMessage($content);
-        // array_push($messages, $name . ", welcome to our bot!");
-        // sendMessagesToChat($telegram, $chat_id, $messages);
+        array_push($messages, $name . ", welcome to our bot!");
+        sendMessagesToChat($telegram, $chat_id, $messages);
         break;
     case '/question':
         array_push($messages, "Write you question...");
@@ -39,8 +29,11 @@ switch ($received) {
         break;
     default:
         if (substr($received, 0, 10) == "/question_") {
-            $question = createSingleQuestionMessage(Stackapi::singleQuestion(substr($received, 10)));
+            $id = substr($received, 10);
+            $question = createSingleQuestionMessage(Stackapi::singleQuestion($id));
+            $all_answers = createAllAnswersMessage(Stackapi::getAllAnswers($id));
             array_push($messages, $question);
+            array_push($messages, $all_answers);
             sendMessagesToChat($telegram, $chat_id, $messages);
             break;
         }
