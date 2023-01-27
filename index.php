@@ -11,6 +11,7 @@ $telegram = new Telegram($bot_token);
 $database = new Database();
 
 $chat_id = $telegram->ChatID();
+$helpMessage = "Commands:\nWrite /question to ask a question!";
 $name = $telegram->FirstName();
 $messages = array();
 
@@ -26,7 +27,9 @@ switch ($received) {
         $database->setStatus($chat_id, "question");
         sendMessagesToChat($telegram, $chat_id, $messages);
         break;
-    case '/end':
+    case '/help':
+        array_push($messages, $helpMessage);
+        sendMessagesToChat($telegram, $chat_id, $messages);
         break;
     default:
         if (substr($received, 0, 10) == "/question_") {
