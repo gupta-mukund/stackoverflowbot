@@ -18,7 +18,6 @@ $received = $telegram->Text();
 
 switch ($received) {
     case '/start':
-        $telegram->sendMessage($content);
         array_push($messages, $name . ", welcome to our bot!");
         sendMessagesToChat($telegram, $chat_id, $messages);
         break;
@@ -27,6 +26,8 @@ switch ($received) {
         $database->setStatus($chat_id, "question");
         sendMessagesToChat($telegram, $chat_id, $messages);
         break;
+    case '/end':
+        break;
     default:
         if (substr($received, 0, 10) == "/question_") {
             $id = substr($received, 10);
@@ -34,6 +35,13 @@ switch ($received) {
             $all_answers = createAllAnswersMessage(Stackapi::getAllAnswers($id));
             array_push($messages, $question);
             array_push($messages, $all_answers);
+            sendMessagesToChat($telegram, $chat_id, $messages);
+            break;
+        }
+        if (substr($received, 0, 8) == "/answer_") {
+            $id = substr($received, 8);
+            $answer = createSingleAnswerMessage(StackApi::getSingleAnswer($id));
+            array_push($messages, $answer);
             sendMessagesToChat($telegram, $chat_id, $messages);
             break;
         }

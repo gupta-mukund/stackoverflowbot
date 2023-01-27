@@ -23,11 +23,11 @@ function createQuestionsMessage($data)
         $result = $result . " Q: " . $single->{"title"};
         $result = $result . "\n";
         $result = $result . $blue_diamond . " votes: " . $single->{"score"} . ", answers: " . $single->{"answer_count"} . "\n";
-        $result = $result . htmlentities(substr($single->{"body"}, 0, 300)) . "...\n";
+        $result = $result . html_entity_decode(substr($single->{"body"}, 0, 300)) . "...\n";
         $result = $result . "/question_" . $single->{"question_id"};
         $result = $result . "\n\n";
     }
-    return $result;
+    return strip_tags($result);
 }
 
 function createSingleQuestionMessage($data)
@@ -35,9 +35,9 @@ function createSingleQuestionMessage($data)
     $result = "";
     foreach ($data as $single) {
         $result = $result . "Q " . $single->{"title"} . "\n";
-        //$result = $result . htmlentities($single->{"body"});
+        $result = $result . html_entity_decode($single->{"body"});
     }
-    return $result;
+    return strip_tags($result);
 }
 
 function createAllAnswersMessage($data)
@@ -50,5 +50,16 @@ function createAllAnswersMessage($data)
         $result = $result . "/answer_" . $single->{"answer_id"} . "\n";
     }
 
-    return $result;
+    return strip_tags($result);
+}
+
+function createSingleAnswerMessage($data)
+{
+    $result = "";
+    if (count($data) == 0) {
+        return "Wrong answer id";
+    }
+    $result = $result . html_entity_decode($data[0]->{"body"});
+
+    return strip_tags($result);
 }
