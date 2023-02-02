@@ -23,7 +23,7 @@ function createQuestionsMessage($data)
         $result = $result . " Q: " . $single->{"title"};
         $result = $result . "\n";
         $result = $result . $blue_diamond . " votes: " . $single->{"score"} . ", answers: " . $single->{"answer_count"} . "\n";
-        $result = $result . html_entity_decode(substr($single->{"body"}, 0, 300)) . "...\n";
+        $result = $result . substr(strip_tags(html_entity_decode($single->{"body"})), 0, 300) . " ...\n";
         $result = $result . "/question_" . $single->{"question_id"};
         $result = $result . "\n\n";
     }
