@@ -10,6 +10,7 @@ class Stackapi
 
     private static function get_json($url)
     {
+        $url = str_replace(' ', '%20', $url);
         $ch = curl_init();
 
         $ch = curl_init();
